@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+    <link rel="stylesheet" href="/static/style.css">
+    <head>
+        {% if site == 'mentors' %} 
+            {% set title = 'Mentors' %} {% set h1 = 'On this page, you can check our mentors and country where they came from.'%}
+
+        {% elif site == 'all-school' %}
+            {% set title = 'All school page' %} {% set h1 = 'On this page, you can check all the school. Even if there is no mentor yet' %}
+
+        {% elif site == 'mentors-by-country' %}
+            {% set title = 'Mentors by country' %} {% set h1 = 'On this page, you can check how many mentors by each country we have.' %}
+
+        {% elif site == 'contacts' %}
+            {% set title = 'contacts' %} {% set h1 = 'On this page, you can check the contacts' %}
+
+        {% elif site == 'applicants' %}
+            {% set title = 'Applicants' %} {% set h1 = 'On this page, you can check the applicants' %}
+
+        {% elif site == 'applicants-and-mentors' %}
+            {% set title = 'Applicants and mentors' %} {% set h1 = 'On this page, you can check the mentorship for each applicant' %}
+        {% endif %}
+        <title>{{title}}</title>
+        <h1>{{h1}}</h1>
+        <h1></h1>
+    </head>
+    <body>
+        <table>
+            <thead>
+
+            {% if site == 'mentors'  or site == 'all-school' %}
+                <tr>
+                    {% if site == 'mentors' %}
+                        <th>Id</th>
+                    {% endif %}
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>School's name</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in range(data|length) %} 
+                    <tr>
+                        {% if site == 'mentors'%}
+                            <th>{{ data[i]['mentor_id'] }}</th>
+                        {% endif %}
+                        <th>{{ data[i]['mentor_first_name'] }}</th>
+                        <th>{{ data[i]['mentor_last_name'] }}</th>
+                        <th>{{ data[i]['school_name'] }}</th>
+                        <th>{{ data[i]['school_country'] }}</th>
+                    </tr>
+                {% endfor %}
+
+                {% elif site == 'mentors-by-country' %}
+                <tr>
+                    <th>City</th>
+                    <th>Counts</th>
+                </tr>
+                <tbody>
+                    {% for i in range(data|length) %}
+                    <tr>
+                        {% for key, value in data[i].items() %}
+                        <td>{{value}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+
+                {% elif site == 'contacts' %}
+                    <tr>
+                        <th>School's name</th>
+                        <th>Mentor</th>
+                    {% for i in range(data |length) %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <td>{{ data[i]['school_name'] }}</td>
+                        <td>{{ data[i]['mentor_first_name'] }} {{ data[i]['mentor_last_name'] }}</td>
+                    {% endfor %}
+                </thead>
+
+                {% elif site == 'applicants' %}
+                <tr>
+                    <th>First name</th>
+                    <th>Creation date</th>
+                    <th>Application code</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for i in range(data |length) %}
+                    <tr>
+                        <td>{{ data[i]['first_name'] }}</td>
+                        <td>{{ data[i]['creation_date'] }}</td>
+                        <td>{{ data[i]['application_code'] }}</td>
+                    </tr>
+                    {% endfor %}
+
+                {% elif site == 'applicants-and-mentors' %}
+                <tr>
+                    <th>Mentor's first name</th>
+                    <th>Applicant's first name</th>
+                    <th>Application code</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for i in range(data|length) %}
+                    <tr>
+                        <td>{{ data[i]['mentor_first_name'] }}</td>
+                        <td>{{ data[i]['applicant_first_name'] }}</td>
+                        <td>{{ data[i]['applicant_application_code'] }}</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </body>
+    <a href="/">Return</a>
+</html>

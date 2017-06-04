@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" href="/static/style.css">
+    <head>
+        <title>Welcome</title>
+        <h1>Aaa so you want some freedom, ha?</h1>
+    </head>
+    <body>
+
+        {% if site == 'freedom' %}
+        <div class=freedom>
+        <p>Select the group you want to see:</p>
+            <form action="/index/people" id=choose method='POST'>
+                <input type="radio" name="people" value="mentors">Mentors
+                <input type="radio" name="people" value="applicants">Applicants
+                <input type="submit" value="Let's go!">
+            </form><br>
+            <p>Search tool:</p>
+            <form action="/search/result" method="POST">
+                <select name="people" id="people">
+                    <option value="mentors">Mentors</option>
+                    <option value="applicants">Applicants</option>
+                </select>
+                <select name="what" id="what">
+                    <option value="id">Id</option>
+                    <option value="first_name">First name</option>
+                    <option value="last_name">Last name</option>
+                    <option value="phone_number">Phone number</option>
+                </select>
+                <input type="text" name=text required>
+                <button value=submit>Let's search!</button> 
+            </form>
+            </div>
+
+        {% elif (site == 'mentors' or site == 'applicants') and details == None %}
+        <form action="/index/{{site}}/list" method='POST'>
+            <input type="checkbox" name='id' value='id'>Id
+            <input type="checkbox" name="first_name" value="first_name">First name
+            <input type="checkbox" name="last_name" value="last_name">Last name
+            <input type="checkbox" name="phone" value="phone_number">Phone number
+            <input type="checkbox" name="email" value="email">Email
+            {% if site == 'mentors' %}
+                <input type="checkbox" name="nick_name" value="nick_name">Nick name
+                <input type="checkbox" name="city" value="city">City
+                <input type="checkbox" name="fav_number" value="favourite_number">Favourite number
+            {% elif site == 'applicants' %}
+                <input type="checkbox" name='app_code' value='application_code'>Application code
+            {% endif %}<br>
+            <input type="submit" value='Show me!'>
+        </form>
+
+        {% elif (site == 'mentors' or site == 'applicants') and details == True %}
+        <table>
+            <thead>
+                <tr>
+                    {% for i in data[0] %}
+                    <th>{{i}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in range(data|length) %}
+                    <tr>
+                        {% for key, value in data[i].items() %}
+                            <td>{{value}}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% elif site == 'search' %}
+        <table>
+            <thead>
+                <tr>
+                    {% for key, value in data[0].items() %}
+                        <th>{{key}}</th>
+                    {%endfor%}
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in range(data|length) %}
+                <tr>
+                    {% for key, value in data[i].items() %}
+                    <td>{{value}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </body>
+    <a href="/">Return</a>
+</html>
